@@ -1,0 +1,144 @@
+diff --git a/src/alloc.c b/src/alloc.c
+index 27c9111..174e2a6 100644
+--- a/src/alloc.c
++++ b/src/alloc.c
+@@ -49,13 +49,13 @@
+ #else
+ 
+ static void *default_malloc(size_t size) {
+-    WARN_ON_ONCE(in_serving_softirq());
+-    return kmalloc(size, GFP_KERNEL);
++    /* GFP_ATOMIC is required when called from softirq (e.g. XDP kfuncs) */
++    gfp_t flags = in_serving_softirq() ? GFP_ATOMIC : GFP_KERNEL;
++    return kmalloc(size, flags);
+ }
+ 
+ static void default_free(void *ptr) {
+-    WARN_ON_ONCE(in_serving_softirq());
+-    return kfree(ptr);
++    kfree(ptr);
+ }
+ 
+ #endif
+diff --git a/src/database.c b/src/database.c
+index 09d49b0..27733df 100644
+--- a/src/database.c
++++ b/src/database.c
+@@ -142,11 +142,13 @@ static
+ hs_error_t db_decode_header(const char **bytes, const size_t length,
+                             struct hs_database *header) {
+     if (!*bytes) {
+-        return HS_INVALID;
++	//pr_info("quau\n");
++	return -2;
+     }
+ 
+     if (length < sizeof(struct hs_database)) {
+-        return HS_INVALID;
++        //pr_info("quau3\n");
++	return -3;
+     }
+ 
+     // There's no requirement, really, that the serialized stream of bytes
+@@ -159,18 +161,21 @@ hs_error_t db_decode_header(const char **bytes, const size_t length,
+ 
+     header->magic = unaligned_load_u32(buf++);
+     if (header->magic != HS_DB_MAGIC) {
+-        return HS_INVALID;
++	return -4;
+     }
+-
++    //printk("sono arrivato qua\n");
+     header->version = unaligned_load_u32(buf++);
+     if (header->version != HS_DB_VERSION) {
+         return HS_DB_VERSION_ERROR;
+     }
+ 
++
+     header->length = unaligned_load_u32(buf++);
++    
+     if (length != sizeof(struct hs_database) + header->length) {
+-        DEBUG_PRINTF("bad length %zu, expecting %zu\n", length,
+-                     sizeof(struct hs_database) + header->length);
++        
++	//pr_info("bad length %zu, expecting %zu\n", length,
++        //             sizeof(struct hs_database) + header->length);
+         return HS_INVALID;
+     }
+ 
+@@ -322,12 +327,15 @@ hs_error_t HS_CDECL hs_serialized_database_size(const char *bytes,
+                                                 size_t *size) {
+     // Decode and check the header
+     hs_database_t header;
++    //pr_info("lenght passata: %d\n",length);
+     hs_error_t ret = db_decode_header(&bytes, length, &header);
+     if (ret != HS_SUCCESS) {
+-        return ret;
++      //      pr_info("muoio qua\n");
++	    return ret;
+     }
+-
++   
+     if (!size) {
++////	pr_info("muoio qua2\n");
+         return HS_INVALID;
+     }
+ 
+diff --git a/src/kmod/hs_version.h b/src/kmod/hs_version.h
+deleted file mode 100644
+index f6fd235..0000000
+--- a/src/kmod/hs_version.h
++++ /dev/null
+@@ -1,39 +0,0 @@
+-/*
+- * Copyright (c) 2015, Intel Corporation
+- *
+- * Redistribution and use in source and binary forms, with or without
+- * modification, are permitted provided that the following conditions are met:
+- *
+- *  * Redistributions of source code must retain the above copyright notice,
+- *    this list of conditions and the following disclaimer.
+- *  * Redistributions in binary form must reproduce the above copyright
+- *    notice, this list of conditions and the following disclaimer in the
+- *    documentation and/or other materials provided with the distribution.
+- *  * Neither the name of Intel Corporation nor the names of its contributors
+- *    may be used to endorse or promote products derived from this software
+- *    without specific prior written permission.
+- *
+- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+- * POSSIBILITY OF SUCH DAMAGE.
+- */
+-
+-#ifndef HS_VERSION_H_C6428FAF8E3713
+-#define HS_VERSION_H_C6428FAF8E3713
+-
+-/**
+- * A version string to identify this release of Hyperscan.
+- */
+-#define HS_VERSION_STRING "5.4.0 2022-03-31"
+-
+-#define HS_VERSION_32BIT ((5 << 24) | (4 << 16) | (0 << 8) | 0)
+-
+-#endif /* HS_VERSION_H_C6428FAF8E3713 */
+diff --git a/src/rose/program_runtime.c b/src/rose/program_runtime.c
+index e6d1d5a..ef2ef24 100644
+--- a/src/rose/program_runtime.c
++++ b/src/rose/program_runtime.c
+@@ -922,7 +922,7 @@ u64a getBufferDataComplex(const struct core_info *ci, const s64a loc,
+             }
+             c_len = ci->len - loc;
+             c_shift = data_len - c_len;
+-            assert(c_len <= data_len);
++            //assert(c_len <= data_len);
+             copy_upto_64_bytes(data, ci->buf + loc, c_len);
+         } else {
+ #ifdef HAVE_AVX512

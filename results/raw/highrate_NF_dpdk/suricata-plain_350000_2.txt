@@ -1,0 +1,25 @@
+Info: suricata: Multiple af-packet option without interface on each is useless
+Notice: suricata: This is Suricata version 8.0.0 RELEASE running in SYSTEM mode
+Info: cpu: CPUs/cores online: 4
+Info: suricata: Setting engine mode to IDS mode by default
+Info: suricata: No 'host-mode': suricata is in IDS mode, using default setting 'sniffer-only'
+Warning: counters: global stats config is missing. Stats enabled through legacy stats.log. See https://docs.suricata.io/en/suricata-8.0.0/configuration/suricata-yaml.html#stats
+Info: logopenfile: eve-log output device (regular) initialized: eve.json
+Info: logopenfile: fast output device (regular) initialized: fast.log
+Info: logopenfile: stats output device (regular) initialized: stats.log
+Info: detect: 1 rule files processed. 34111 rules successfully loaded, 0 rules failed, 0 rules skipped
+Info: threshold-config: Threshold config parsed: 0 rule(s) found
+Info: detect: 34114 signatures processed. 0 are IP-only rules, 3090 are inspecting packet payload, 30908 inspect application layer, 107 are decoder event only
+Info: af-packet: ens11np1: unable to find af-packet config for interface "ens11np1" or "default", using default values
+Warning: af-packet: ens11np1: AF_PACKET tpacket-v3 is recommended for non-inline operation
+Notice: threads: Threads created -> W: 1 FM: 1 FR: 1   Engine started.
+Notice: suricata: Signal Received.  Stopping engine.
+Info: suricata: time elapsed 52.598s
+Info: counters: Alerts: 14
+Notice: device: ens11np1: packets: 13343756, drops: 7246411 (54.31%), invalid chksum: 0
+
+Packet:13347401
+Alerts:14
+NicRxPackets:13343756
+NicRxDropped:0
+NicRxMissed:0

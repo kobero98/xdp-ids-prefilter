@@ -1,0 +1,20 @@
+# mispredict_good_on_mixed.yaml — misprediction with tcpreplay. Baseline = lowrate4_mixed
+test_name: mispredict_good_on_mixed
+pcap: mixed_output.pcap                 # file name on the slave (SLAVE_PCAP_DIR)
+rules_file: build/mixed/filtered.rules   # rules Suricata loads (from sim/run_pipeline.sh)
+acdb_file:  build/good/good.acdb             # blocklist DB for the XDP filter
+suricata_conf: suricata/suricata-eval.yaml
+filter_proto: 6
+filter_port: 22
+run_phases: [ac_filter]
+allow_zero_acdrop: true   # port 22 never appears in mixed: the filter must drop nothing
+test_mode: tcpreplay   # rate = tcpreplay --pps, loop = passes over the pcap (~45 s)
+rates:
+  - {rep: 1, rate: 10000, loop: 1}
+  - {rep: 1, rate: 20000, loop: 1}
+  - {rep: 1, rate: 40000, loop: 1}
+  - {rep: 1, rate: 80000, loop: 2}
+  - {rep: 1, rate: 120000, loop: 3}
+  - {rep: 1, rate: 160000, loop: 4}
+  - {rep: 1, rate: 200000, loop: 4}
+  - {rep: 1, rate: 250000, loop: 5}

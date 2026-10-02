@@ -1,0 +1,50 @@
+# generated artefacts (rebuild with scripts/build_paper_dbs.sh or sim/run_pipeline.sh)
+/build/
+*.acdb
+*.db
+
+# raw output of new experiment runs (paper runs are tracked; keep new ones local)
+/results/raw/*/*.fast.log
+/results/raw/*/lowrate_report.png
+
+# datasets: pcaps and rulesets are downloaded, never committed
+/datasets/pcap/
+/datasets/rules/
+*.pcap
+*.pcapng
+
+# kernel / BPF / C build output
+*.o
+*.ko
+*.mod
+*.mod.c
+*.cmd
+.*.cmd
+*.d
+modules.order
+Module.symvers
+.tmp_versions/
+/kernel/ac/ac_build
+/kernel/ac/ac_selftest
+/kernel/ac/ac_simfilter
+/kernel/ac/ac_winbench
+/kernel/hs_kfunc/linux-regex-module/
+/analyzer/analyzer
+/analyzer/pcap_hs_scan
+/sim/sim_ac
+/eval/traffic/build/
+
+# analyzer working files (written by run_empirical.sh in analyzer/)
+/analyzer/*.hs
+/analyzer/*.rules
+/analyzer/*_report.txt
+/analyzer/match_counts.txt
+/analyzer/fp_match_counts.txt
+/analyzer/content_map.txt
+/analyzer/proto_meta.txt
+
+# python / editors
+__pycache__/
+*.pyc
+.venv/
+*.swp

@@ -1,0 +1,118 @@
+%YAML 1.1
+---
+vars:
+  # more specific is better for alert accuracy and performance
+  address-groups:
+    HOME_NET: "[192.168.0.0/16,10.0.0.0/8,172.16.0.0/12]"
+    EXTERNAL_NET: "!$HOME_NET"
+
+    HTTP_SERVERS: "$HOME_NET"
+    SMTP_SERVERS: "$HOME_NET"
+    SQL_SERVERS: "$HOME_NET"
+    DNS_SERVERS: "$HOME_NET"
+    TELNET_SERVERS: "$HOME_NET"
+    AIM_SERVERS: "$EXTERNAL_NET"
+    DC_SERVERS: "$HOME_NET"
+    DNP3_SERVER: "$HOME_NET"
+    DNP3_CLIENT: "$HOME_NET"
+    MODBUS_CLIENT: "$HOME_NET"
+    MODBUS_SERVER: "$HOME_NET"
+    ENIP_CLIENT: "$HOME_NET"
+    ENIP_SERVER: "$HOME_NET"
+
+  port-groups:
+    HTTP_PORTS: "80"
+    SHELLCODE_PORTS: "!80"
+    ORACLE_PORTS: 1521
+    SSH_PORTS: 22
+    DNP3_PORTS: 20000
+    MODBUS_PORTS: 502
+    FILE_DATA_PORTS: "[$HTTP_PORTS,110,143]"
+    FTP_PORTS: 21
+    GENEVE_PORTS: 6081
+    VXLAN_PORTS: 4789
+    TEREDO_PORTS: 3544
+    SIP_PORTS: "[5060, 5061]"
+
+
+default-log-dir: /var/log/suricata
+
+runmode: single
+
+max-pending-packets: 1024
+
+logging:
+  default-log-level: info
+
+outputs:
+  - eve-log:
+      enabled: yes
+      filetype: regular
+      filename: eve.json
+      types:
+        - alert
+
+  - fast:
+      enabled: yes
+      filename: fast.log
+
+  - alert-debug:
+      enabled: no
+      filename: alert-debug.log
+
+  - stats:
+      enabled: yes
+      filename: stats.log
+      totals: yes
+
+  - http-log:
+      enabled: no
+      filename: http.log
+
+  - tls-log:
+      enabled: no
+      filename: tls.log
+
+  - dns-log:
+      enabled: no
+      filename: dns.log
+
+  - file-store:
+      enabled: no
+
+threading:
+  set-cpu-affinity: no
+
+af-packet:
+  - interface: eth0
+    cluster-id: 1
+    cluster-type: cluster_flow
+    defrag: yes
+    use-mmap: yes
+    tpacket-v3: yes
+
+checksum-validation: yes
+
+stream:
+  memcap: 64mb
+  checksum-validation: yes
+
+detect:
+  profile: medium
+
+mpm-algo: auto
+
+app-layer:
+  protocols:
+    http:
+      enabled: yes
+    tls:
+      enabled: yes
+    dns:
+      enabled: yes
+
+# Rules are not listed here: eval/run_experiment.py passes the per-capture
+# rule file with `suricata -S build/<capture>/filtered.rules`.
+
+classification-file: /etc/suricata/classification.config
+reference-config-file: /etc/suricata/reference.config

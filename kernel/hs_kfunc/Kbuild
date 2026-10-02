@@ -1,0 +1,79 @@
+obj-m := xdp_regex_module.o
+
+CC_FLAGS_HSRUNTIME	:= -isystem $(shell $(CC) -print-file-name=include)
+CC_FLAGS_REMOVE_SIMD	:= -mno-80387 -mno-fp-ret-in-387 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
+CC_FLAGS_HSRUNTIME	+= -DHAVE_SSE2
+CC_FLAGS_SIMD		:= -msse4.2 -msse4.1
+CC_FLAGS_HSRUNTIME	+= -DHAVE_SSE41 -DHAVE_SSE42
+CC_FLAGS_SIMD		+= -mavx -mavx2
+CC_FLAGS_HSRUNTIME	+= -DHAVE_AVX -DHAVE_AVX2
+CC_FLAGS_SIMD		+= -mavx512f -mavx512cd -mavx512bw -mavx512vl -mavx512vnni
+CC_FLAGS_HSRUNTIME	+= -DHAVE_AVX512
+#CC_FLAGS_SIMD		+= -mavx512vbmi -mavx512vbmi2 -mavx512vnni
+#CC_FLAGS_HSRUNTIME	+= -DHAVE_AVX512VBMI
+
+CC_FLAGS_HSRUNTIME		+= $(CC_FLAGS_SIMD)
+CC_FLAGS_REMOVE_HSRUNTIME	:= $(CC_FLAGS_REMOVE_SIMD)
+CC_FLAGS_REMOVE_HSRUNTIME	+= -Wdeclaration-after-statement
+CC_FLAGS_HSRUNTIME		+= -Wframe-larger-than=2048
+CC_FLAGS_HSRUNTIME		+= -std=gnu11
+CC_FLAGS_REMOVE_HSRUNTIME	+= -std=gnu89
+
+ccflags-y 			+= -I$(src) -I$(src)/linux-regex-module/src -I$(src)/linux-regex-module/src/util
+ccflags-y			+= $(CC_FLAGS_HSRUNTIME)
+ccflags-remove-y		+= $(CC_FLAGS_REMOVE_HSRUNTIME)
+
+CFLAGS_alloc.o			:= $(CC_FLAGS_REMOVE_SIMD)
+CFLAGS_REMOVE_alloc.o		:= $(CC_FLAGS_SIMD)
+CFLAGS_scratch.o		:= $(CC_FLAGS_REMOVE_SIMD)
+CFLAGS_REMOVE_scratch.o		:= $(CC_FLAGS_SIMD)
+CFLAGS_database.o		:= $(CC_FLAGS_REMOVE_SIMD)
+CFLAGS_REMOVE_database.o	:= $(CC_FLAGS_SIMD)
+
+xdp_regex_module-m	:= xdp_kfunc_mod.o          			   \
+		   linux-regex-module/src/alloc.o                  \
+		   linux-regex-module/src/scratch.o                \
+		   linux-regex-module/src/runtime.o                \
+		   linux-regex-module/src/database.o               \
+		   linux-regex-module/src/hs_version.o             \
+		   linux-regex-module/src/stream_compress.o        \
+		   linux-regex-module/src/fdr/fdr.o                \
+		   linux-regex-module/src/fdr/teddy_avx2.o         \
+		   linux-regex-module/src/fdr/teddy.o              \
+		   linux-regex-module/src/hwlm/hwlm.o              \
+		   linux-regex-module/src/hwlm/noodle_engine.o     \
+		   linux-regex-module/src/nfa/accel.o              \
+		   linux-regex-module/src/nfa/castle.o             \
+		   linux-regex-module/src/nfa/gough.o              \
+		   linux-regex-module/src/nfa/lbr.o                \
+		   linux-regex-module/src/nfa/limex_64.o           \
+		   linux-regex-module/src/nfa/limex_accel.o        \
+		   linux-regex-module/src/nfa/limex_native.o       \
+		   linux-regex-module/src/nfa/limex_simd128.o      \
+		   linux-regex-module/src/nfa/limex_simd256.o      \
+		   linux-regex-module/src/nfa/limex_simd384.o      \
+		   linux-regex-module/src/nfa/limex_simd512.o      \
+		   linux-regex-module/src/nfa/mcclellan.o          \
+		   linux-regex-module/src/nfa/mcsheng.o            \
+		   linux-regex-module/src/nfa/mcsheng_data.o       \
+		   linux-regex-module/src/nfa/mpv.o                \
+		   linux-regex-module/src/nfa/nfa_api_dispatch.o   \
+		   linux-regex-module/src/nfa/repeat.o             \
+		   linux-regex-module/src/nfa/sheng.o              \
+		   linux-regex-module/src/nfa/shufti.o             \
+		   linux-regex-module/src/nfa/tamarama.o           \
+		   linux-regex-module/src/nfa/truffle.o            \
+		   linux-regex-module/src/rose/block.o             \
+		   linux-regex-module/src/rose/catchup.o           \
+		   linux-regex-module/src/rose/init.o              \
+		   linux-regex-module/src/rose/match.o             \
+		   linux-regex-module/src/rose/program_runtime.o   \
+		   linux-regex-module/src/rose/stream.o            \
+		   linux-regex-module/src/som/som_runtime.o        \
+		   linux-regex-module/src/som/som_stream.o         \
+		   linux-regex-module/src/util/cpuid_flags.o       \
+		   linux-regex-module/src/util/masked_move.o       \
+		   linux-regex-module/src/util/multibit.o          \
+		   linux-regex-module/src/util/simd_utils.o        \
+		   linux-regex-module/src/util/state_compress.o    \
+#

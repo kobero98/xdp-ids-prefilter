@@ -1,0 +1,37 @@
+# run0 5000pps loop1 pcap=mixed_output.pcap sent=1437980 nic_missed=0
+# bpf_map hs_timing (somme su CPU): {"0": 3629351141, "1": 748666, "2": 1939300, "3": 504075508}
+# counters: {"0": 795923, "1": 0, "2": 35908, "3": 758863, "4": 1437980, "5": 66330, "6": 0, "7": 0}
+bench 1
+clock_ns_x1000 48350
+cpu 0 busy 0
+cpu 0 bucket 0 count 56971 bytes 353721 matches 2 lookup 19237007 fpu_begin 10297585 scan 68093490 scan_matched 6331 fpu_end 8052837 total 105680919 min 431 max 46596
+cpu 0 bucket 64 count 501 bytes 46490 matches 1 lookup 131700 fpu_begin 74683 scan 999182 scan_matched 22848 fpu_end 51821 total 1257386 min 667 max 23511
+cpu 0 bucket 128 count 3502 bytes 732930 matches 395 lookup 1202188 fpu_begin 596065 scan 17025488 scan_matched 4031431 fpu_end 460350 total 19284091 min 782 max 39571
+cpu 0 bucket 256 count 4332 bytes 1704951 matches 1438 lookup 1374510 fpu_begin 766922 scan 48745055 scan_matched 23647888 fpu_end 502137 total 51388624 min 905 max 87851
+cpu 0 bucket 512 count 16751 bytes 12292024 matches 7103 lookup 6593047 fpu_begin 3228601 scan 222668260 scan_matched 84795588 fpu_end 2171400 total 234661308 min 1181 max 171709
+cpu 0 bucket 1024 count 61688 bytes 88606088 matches 4461 lookup 13632638 fpu_begin 7161604 scan 434546788 scan_matched 108432454 fpu_end 6002452 total 461343482 min 919 max 448948
+cpu 0 hist 0 0 0 0 0 0 0 0 0 483 24823 23284 51983 14600 13570 12268 2304 218 210 2 0 0 0 0 0 0 0 0 0 0 0 0
+cpu 1 busy 0
+cpu 1 bucket 0 count 102555 bytes 625177 matches 2 lookup 21779815 fpu_begin 11263592 scan 79821989 scan_matched 2830 fpu_end 9414313 total 122279709 min 448 max 22401
+cpu 1 bucket 64 count 537 bytes 49973 matches 6 lookup 165005 fpu_begin 61980 scan 1077078 scan_matched 34459 fpu_end 54923 total 1358986 min 715 max 17467
+cpu 1 bucket 128 count 1902 bytes 407182 matches 73 lookup 544940 fpu_begin 248091 scan 10514280 scan_matched 889855 fpu_end 231620 total 11538931 min 752 max 262404
+cpu 1 bucket 256 count 3750 bytes 1461505 matches 1343 lookup 965332 fpu_begin 556454 scan 44179872 scan_matched 20970455 fpu_end 456912 total 46158570 min 892 max 110080
+cpu 1 bucket 512 count 169223 bytes 91676044 matches 1760 lookup 31661660 fpu_begin 16093388 scan 349152062 scan_matched 31676030 fpu_end 14359004 total 411266114 min 971 max 126109
+cpu 1 bucket 1024 count 74531 bytes 107492569 matches 5267 lookup 12795918 fpu_begin 6762545 scan 623195161 scan_matched 157882268 fpu_end 6409801 total 649163425 min 1272 max 484048
+cpu 1 hist 0 0 0 0 0 0 0 0 0 334 71888 136077 100242 23233 8647 7676 2696 1064 633 8 0 0 0 0 0 0 0 0 0 0 0 0
+cpu 2 busy 0
+cpu 2 bucket 0 count 56732 bytes 357854 matches 0 lookup 15702775 fpu_begin 9533308 scan 55754900 scan_matched 0 fpu_end 6950264 total 87941247 min 450 max 119266
+cpu 2 bucket 64 count 929 bytes 83435 matches 11 lookup 294410 fpu_begin 217015 scan 1843814 scan_matched 116834 fpu_end 99240 total 2454479 min 699 max 48332
+cpu 2 bucket 128 count 2131 bytes 452707 matches 82 lookup 764698 fpu_begin 435478 scan 11172522 scan_matched 912495 fpu_end 258436 total 12631134 min 751 max 33320
+cpu 2 bucket 256 count 4224 bytes 1637604 matches 1236 lookup 1382717 fpu_begin 785730 scan 45553488 scan_matched 19418934 fpu_end 506770 total 48228705 min 919 max 157348
+cpu 2 bucket 512 count 5055 bytes 3662021 matches 1511 lookup 1574647 fpu_begin 925543 scan 64601656 scan_matched 27979323 fpu_end 594860 total 67696706 min 1165 max 134154
+cpu 2 bucket 1024 count 86106 bytes 124161422 matches 4491 lookup 16591364 fpu_begin 9203021 scan 475540737 scan_matched 109891704 fpu_end 7750055 total 509085177 min 1207 max 511595
+cpu 2 hist 0 0 0 0 0 0 0 0 0 350 31758 18410 73060 13257 8087 7616 2227 209 198 5 0 0 0 0 0 0 0 0 0 0 0 0
+cpu 3 busy 0
+cpu 3 bucket 0 count 41944 bytes 264527 matches 6 lookup 14256052 fpu_begin 7590570 scan 51649168 scan_matched 16811 fpu_end 6342153 total 79837943 min 419 max 38359
+cpu 3 bucket 64 count 636 bytes 58651 matches 8 lookup 155463 fpu_begin 118130 scan 1192454 scan_matched 84428 fpu_end 62448 total 1528495 min 659 max 27483
+cpu 3 bucket 128 count 1771 bytes 373671 matches 82 lookup 581962 fpu_begin 353076 scan 9342872 scan_matched 1174845 fpu_end 233138 total 10511048 min 741 max 58005
+cpu 3 bucket 256 count 4119 bytes 1623212 matches 1391 lookup 1226575 fpu_begin 782639 scan 50323407 scan_matched 23727222 fpu_end 509940 total 52842561 min 908 max 62938
+cpu 3 bucket 512 count 5057 bytes 3646676 matches 1769 lookup 1677492 fpu_begin 962048 scan 73503538 scan_matched 35035220 fpu_end 674375 total 76817453 min 1146 max 124662
+cpu 3 bucket 1024 count 43719 bytes 62305074 matches 3470 lookup 9857660 fpu_begin 5548100 scan 315556377 scan_matched 84954116 fpu_end 4620739 total 335582876 min 1313 max 492785
+cpu 3 hist 0 0 0 0 0 0 0 0 0 467 16672 18080 33772 11452 7329 7338 1981 80 70 5 0 0 0 0 0 0 0 0 0 0 0 0

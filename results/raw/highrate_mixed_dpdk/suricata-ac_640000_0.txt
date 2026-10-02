@@ -1,0 +1,9 @@
+Info: suricata: Multiple af-packet option without interface on each is useless
+Notice: suricata: This is Suricata version 8.0.0 RELEASE running in SYSTEM mode
+Info: cpu: CPUs/cores online: 4
+Info: suricata: Setting engine mode to IDS mode by default
+Info: suricata: No 'host-mode': suricata is in IDS mode, using default setting 'sniffer-only'
+Warning: counters: global stats config is missing. Stats enabled through legacy stats.log. See https://docs.suricata.io/en/suricata-8.0.0/configuration/suricata-yaml.html#stats
+Info: logopenfile: eve-log output device (regular) initialized: eve.json
+Info: logopenfile: fast output device (regular) initialized: fast.log
+Info: logopenfile: stats output device (regular) initialized: stats.log
